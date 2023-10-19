@@ -1,36 +1,52 @@
 <?php
-
-$name = $_POST["name"];
-$email = $_POST["email"];
-$subject = $_POST["subject"];
-$message = $_POST["message"];
-
-require "vendor/autoload.php";
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-
-$mail = new PHPMailer(true);
-
-// $mail->SMTPDebug = SMTP::DEBUG_SERVER;
-
-$mail->isSMTP();
-$mail->SMTPAuth = true;
-
-$mail->Host = "smtp-relay.brevo.com";
-$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-$mail->Port = 587;
-
-$mail->Username = "azidyaleatorio@gmail.com";
-$mail->Password = "xsmtpsib-9a57ebfa35bee3e0486f92f635660b5c130d3260fb83a8e52752a6bd4f1a7af9-WqfY8hzRHw15LSQZ";
-
-$mail->setFrom($email, $name);
-$mail->addAddress("azidyaleatorio@gmail.com", "Heitor");
-
-$mail->Subject = $subject;
-$mail->Body = $message;
-
-$mail->send();
-
-header("Location: index.html");
+	require 'PHPMailer/PHPMailerAutoload.php';
+	
+	$Mailer = new PHPMailer();
+	
+	//Define que será usado SMTP
+	$Mailer->IsSMTP();
+	
+	//Enviar e-mail em HTML
+	$Mailer->isHTML(true);
+	
+	//Aceitar carasteres especiais
+	$Mailer->Charset = 'UTF-8';
+	
+	//Configurações
+	$Mailer->SMTPAuth = true;
+	$Mailer->SMTPSecure = 'ssl';
+	
+	//nome do servidor
+	$Mailer->Host = 'smtp-relay.brevo.com';
+	//Porta de saida de e-mail 
+	$Mailer->Port = 587;
+	
+	//Dados do e-mail de saida - autenticação
+	$Mailer->Username = 'azidyaleatorio@gmail.com';
+	$Mailer->Password = '2PJAvTasUrKbd3Vx';
+	
+	//E-mail remetente (deve ser o mesmo de quem fez a autenticação)
+	$Mailer->From = 'usuario@dominio.com';
+	
+	//Nome do Remetente
+	$Mailer->FromName = 'Teste';
+	
+	//Assunto da mensagem
+	$Mailer->Subject = 'Titulo - Recuperar Senha';
+	
+	//Corpo da Mensagem
+	$Mailer->Body = 'Conteudo do E-mail';
+	
+	//Corpo da mensagem em texto
+	$Mailer->AltBody = 'conteudo do E-mail em texto';
+	
+	//Destinatario 
+	$Mailer->AddAddress('azidyaleatorio@gmail.com');
+	
+	if($Mailer->Send()){
+		echo "E-mail enviado com sucesso";
+	}else{
+		echo "Erro no envio do e-mail: " . $Mailer->ErrorInfo;
+	}
+	
 ?>
