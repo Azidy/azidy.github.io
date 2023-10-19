@@ -1,7 +1,15 @@
 <?php
 	session_start();
-	require 'PHPMailer/PHPMailerAutoload.php';
-	
+	use PHPMailer\PHPMailer\PHPMailer;
+	use PHPMailer\PHPMailer\Exception;
+
+	require 'path/to/PHPMailer/src/Exception.php';
+	require 'path/to/PHPMailer/src/PHPMailer.php';
+	require 'path/to/PHPMailer/src/SMTP.php';
+	$nome = filter_input(INPUT_POST, 'nome');
+	$email = filter_input(INPUT_POST, 'email');
+	$text = filter_input(INPUT_POST, 'text');
+	$message = filter_input(INPUT_POST, 'message');
 	$Mailer = new PHPMailer();
 	
 	//Define que será usado SMTP
@@ -11,7 +19,8 @@
 	$Mailer->isHTML(true);
 	
 	//Aceitar carasteres especiais
-	$Mailer->Charset = 'UTF-8';
+	//To load the French version
+	$Mailer->setLanguage('pt_br', '/optional/path/to/language/directory/');
 	
 	//Configurações
 	$Mailer->SMTPAuth = true;
@@ -27,19 +36,19 @@
 	$Mailer->Password = '2PJAvTasUrKbd3Vx';
 	
 	//E-mail remetente (deve ser o mesmo de quem fez a autenticação)
-	$Mailer->From = 'usuario@dominio.com';
+	$Mailer->From = $email;
 	
 	//Nome do Remetente
-	$Mailer->FromName = 'Teste';
+	$Mailer->FromName = $nome;
 	
 	//Assunto da mensagem
-	$Mailer->Subject = 'Titulo - Recuperar Senha';
+	$Mailer->Subject = $text;
 	
 	//Corpo da Mensagem
-	$Mailer->Body = 'Conteudo do E-mail';
+	$Mailer->Body = $message;
 	
 	//Corpo da mensagem em texto
-	$Mailer->AltBody = 'conteudo do E-mail em texto';
+	$Mailer->AltBody = $message;
 	
 	//Destinatario 
 	$Mailer->AddAddress('azidyaleatorio@gmail.com');
